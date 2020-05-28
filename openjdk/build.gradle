@@ -332,7 +332,7 @@ model {
 
                         // Static link to BoringSSL
                         linker.args "-O3",
-                                //"-fvisibility=hidden",
+                                "-fvisibility=default",
                                 "-g",
                                 "-lstdc++",
                                 "-lpthread",
