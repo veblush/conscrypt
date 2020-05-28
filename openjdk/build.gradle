@@ -331,7 +331,8 @@ model {
 
                         // Static link to BoringSSL
                         linker.args "-O3",
-                                "-fvisibility=hidden",
+                                //"-fvisibility=hidden",
+                                "-g",
                                 "-lstdc++",
                                 "-lpthread",
                                 libPath + "/ssl/libssl.a",
