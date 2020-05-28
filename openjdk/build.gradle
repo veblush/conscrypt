@@ -316,6 +316,7 @@ model {
                                 "-fPIC",
                                 "-O3",
                                 "-std=c++11",
+                                "-g",
                                 "-I$jniSourceDir/main/include",
                                 "-I$jniSourceDir/unbundled/include",
                                 "-I$boringsslIncludeDir",
