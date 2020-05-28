@@ -314,6 +314,7 @@ model {
                     if (toolChain in Clang || toolChain in Gcc) {
                         cppCompiler.args "-Wall",
                                 "-fPIC",
+                                "-fno-omit-frame-pointer",
                                 "-O3",
                                 "-std=c++11",
                                 "-g",
