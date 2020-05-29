@@ -33,17 +33,19 @@
             if (mJavaArray == nullptr) {                                              \
                 conscrypt::jniutil::throwNullPointerException(mEnv, nullptr);         \
             } else {                                                                  \
-                mRawArray = mEnv->Get##NAME##ArrayElements(mJavaArray, nullptr);      \
+                mRawArray = static_cast<PRIMITIVE_TYPE*>(                             \
+                    mEnv->GetPrimitiveArrayCritical(mJavaArray, nullptr));            \
             }                                                                         \
         }                                                                             \
         ~Scoped##NAME##ArrayRO() {                                                    \
             if (mRawArray) {                                                          \
-                mEnv->Release##NAME##ArrayElements(mJavaArray, mRawArray, JNI_ABORT); \
+                mEnv->ReleasePrimitiveArrayCritical(mJavaArray, mRawArray, JNI_ABORT);\
             }                                                                         \
         }                                                                             \
         void reset(PRIMITIVE_TYPE##Array javaArray) {                                 \
             mJavaArray = javaArray;                                                   \
-            mRawArray = mEnv->Get##NAME##ArrayElements(mJavaArray, nullptr);          \
+            mRawArray = static_cast<PRIMITIVE_TYPE*>(                                 \
+               mEnv->GetPrimitiveArrayCritical(mJavaArray, nullptr));                 \
         }                                                                             \
         const PRIMITIVE_TYPE* get() const {                                           \
             return mRawArray;                                                         \
@@ -91,17 +93,19 @@ INSTANTIATE_SCOPED_PRIMITIVE_ARRAY_RO(jshort, Short);
             if (mJavaArray == nullptr) {                                         \
                 conscrypt::jniutil::throwNullPointerException(mEnv, nullptr);    \
             } else {                                                             \
-                mRawArray = mEnv->Get##NAME##ArrayElements(mJavaArray, nullptr); \
+                mRawArray = static_cast<PRIMITIVE_TYPE*>(                        \
+                    mEnv->GetPrimitiveArrayCritical(mJavaArray, nullptr));       \
             }                                                                    \
         }                                                                        \
         ~Scoped##NAME##ArrayRW() {                                               \
             if (mRawArray) {                                                     \
-                mEnv->Release##NAME##ArrayElements(mJavaArray, mRawArray, 0);    \
+                mEnv->ReleasePrimitiveArrayCritical(mJavaArray, mRawArray, 0);   \
             }                                                                    \
         }                                                                        \
         void reset(PRIMITIVE_TYPE##Array javaArray) {                            \
             mJavaArray = javaArray;                                              \
-            mRawArray = mEnv->Get##NAME##ArrayElements(mJavaArray, nullptr);     \
+            mRawArray = static_cast<PRIMITIVE_TYPE*>(                            \
+                    mEnv->GetPrimitiveArrayCritical(mJavaArray, nullptr));       \
         }                                                                        \
         const PRIMITIVE_TYPE* get() const {                                      \
             return mRawArray;                                                    \
