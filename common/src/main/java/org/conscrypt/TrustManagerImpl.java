@@ -404,7 +404,7 @@ public final class TrustManagerImpl extends X509ExtendedTrustManager {
             String identificationAlgorithm = parameters.getEndpointIdentificationAlgorithm();
             if ("HTTPS".equalsIgnoreCase(identificationAlgorithm)) {
                 ConscryptHostnameVerifier verifier = getHttpsVerifier();
-                if (!verifier.verify(hostname, session)) {
+                if (!verifier.verify(certs, hostname, session)) {
                     throw new CertificateException("No subjectAltNames on the certificate match");
                 }
             }

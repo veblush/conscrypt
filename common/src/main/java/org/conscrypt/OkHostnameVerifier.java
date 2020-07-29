@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.net.ssl.SSLException;
@@ -34,6 +36,8 @@ import javax.net.ssl.SSLSession;
  * href="http://www.ietf.org/rfc/rfc2818.txt">RFC 2818</a>.
  */
 public final class OkHostnameVerifier implements ConscryptHostnameVerifier {
+    private static final Logger logger = Logger.getLogger(OkHostnameVerifier.class.getName());
+
     // Android-changed: Add a mode which disallows top-level domain wildcards. b/144694112
     // public static final OkHostnameVerifier INSTANCE = new OkHostnameVerifier();
     public static final OkHostnameVerifier INSTANCE = new OkHostnameVerifier(false);
@@ -70,13 +74,9 @@ public final class OkHostnameVerifier implements ConscryptHostnameVerifier {
     // END Android-changed: Add a mode which disallows top-level domain wildcards. b/144694112
 
     @Override
-    public boolean verify(String host, SSLSession session) {
-        try {
-            Certificate[] certificates = session.getPeerCertificates();
-            return verify(host, (X509Certificate) certificates[0]);
-        } catch (SSLException e) {
-            return false;
-        }
+    public boolean verify(X509Certificate[] certs, String host, SSLSession session) {
+        logger.info("verify: host=" + host);
+        return verify(host, certs[0]);
     }
 
     public boolean verify(String host, X509Certificate certificate) {
